@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Ngalor-Ngidul Net</a>
+    <a class="navbar-brand" href="/">Ngalor-Ngidul Net</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -20,6 +20,20 @@
         <li class="nav-item">
           <a class="nav-link" href="/register">register</a>
         </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/logout"
+            onclick="event.preventDefault();document.getElementById('form-logout').submit()"
+            >logout</a
+          >
+        </li>
+        <form
+          action="/logout"
+          method="post"
+          style="display: none"
+          id="form-logout"
+        ></form>
       </ul>
     </div>
   </div>

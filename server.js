@@ -2,7 +2,8 @@ const express = require('express')
 const dotenv = require('dotenv')
 const path = require('path')
 const passport = require('passport')
-const LocalStrategy = require('passport-local')
+const session = require('express-session')
+const LocalStrategy = require('passport-local').Strategy
 const ejsMate = require('ejs-mate')
 require('./config/db') // konfigurasi database
 
@@ -16,6 +17,26 @@ const app = express()
 // tempate engine ejs Mate
 app.engine('ejs', ejsMate)
 
+// konfigurasi express-session
+app.use(
+  session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+  })
+)
+
+// inisiasi passport dan sesi passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+// konfigurasi lokal passport
+passport.use(new LocalStrategy(User.authenticate()))
+
+// getter dan setter pengguna
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
 // template engine ejs
 app.set('view engine', 'ejs')
 // directory untuk file view (EJS)
@@ -26,7 +47,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
 
-// contoh route
 app.get('/', (req, res) => {
   res.render('pages/index')
 })
@@ -37,11 +57,13 @@ app.get('/register', (req, res) => {
 
 app.post('/register', async (req, res) => {
   try {
-    const user = new User(req.body)
-    await user.save()
+    const { username, email, password } = req.body
+    const user = new User({ username, email })
+    await User.register(user, password)
     res.redirect('/login')
   } catch (error) {
     console.error(error.message)
+    res.redirect('/register')
   }
 })
 
@@ -49,17 +71,26 @@ app.get('/login', (req, res) => {
   res.render('pages/auth/login')
 })
 
-app.post('/login', async (req, res) => {
-  try {
-    const user = req.body
-    const isUser = await User.findOne(user)
-    if (isUser) {
-      res.redirect(`/main/${isUser._id}`)
+app.post(
+  '/login',
+  passport.authenticate('local', {
+    failureRedirect: '/login',
+  }),
+  async (req, res) => {
+    const { username } = req.body
+    const user = await User.findOne({ username })
+    if (!user) {
+      return res.redirect('/login')
     }
-  } catch (error) {
-    console.error(error.message)
-    res.redirect('/login')
+    res.redirect(`/main/${user._id}`)
   }
+)
+
+app.post('/logout', (req, res) => {
+  req.logOut(err => {
+    if (err) return next(err)
+    res.redirect('/login')
+  })
 })
 
 app.get('/main/:id', async (req, res) => {
