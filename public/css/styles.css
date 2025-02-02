@@ -1,0 +1,9 @@
+.btn-outline-dark {
+  background-color: transparent;
+  border-color: black;
+  color: black;
+}
+.btn-outline-dark:hover {
+  background-color: black;
+  color: white;
+}
