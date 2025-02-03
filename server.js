@@ -42,7 +42,7 @@ app.set('view engine', 'ejs')
 // directory untuk file view (EJS)
 app.set('views', path.join(__dirname, 'views'))
 
-// middlware
+// middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
@@ -51,52 +51,19 @@ app.get('/', (req, res) => {
   res.render('pages/index')
 })
 
-app.get('/register', (req, res) => {
-  res.render('pages/auth/register')
-})
-
-app.post('/register', async (req, res) => {
-  try {
-    const { username, email, password } = req.body
-    const user = new User({ username, email })
-    await User.register(user, password)
-    res.redirect('/login')
-  } catch (error) {
-    console.error(error.message)
-    res.redirect('/register')
-  }
-})
-
-app.get('/login', (req, res) => {
-  res.render('pages/auth/login')
-})
-
-app.post(
-  '/login',
-  passport.authenticate('local', {
-    failureRedirect: '/login',
-  }),
-  async (req, res) => {
-    const { username } = req.body
-    const user = await User.findOne({ username })
-    if (!user) {
-      return res.redirect('/login')
-    }
-    res.redirect(`/main/${user._id}`)
-  }
-)
-
-app.post('/logout', (req, res) => {
-  req.logOut(err => {
-    if (err) return next(err)
-    res.redirect('/login')
-  })
-})
+app.use('/', require('./routes/auth'))
 
 app.get('/main/:id', async (req, res) => {
   const { id } = req.params
   const user = await User.findById(id)
   res.render('pages/main', { user })
+})
+
+// middleware untuk error
+app.use((err, req, res, next) => {
+  const { statusCode = 500 } = err
+  if (!err.message) err.message = 'oh no, something went wrong!'
+  res.status(statusCode).render('pages/error', { err })
 })
 
 app.listen(3000, () => {
