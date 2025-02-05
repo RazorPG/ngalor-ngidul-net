@@ -47,16 +47,21 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
 
+//
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user
+  next()
+})
+
 app.get('/', (req, res) => {
   res.render('pages/index')
 })
 
 app.use('/', require('./routes/auth'))
 
-app.get('/main/:id', async (req, res) => {
-  const { id } = req.params
-  const user = await User.findById(id)
-  res.render('pages/main', { user })
+app.get('/main', (req, res) => {
+  if (!req.user) return res.redirect('/login')
+  res.render('pages/main', { currentUser: req.user })
 })
 
 // middleware untuk error
