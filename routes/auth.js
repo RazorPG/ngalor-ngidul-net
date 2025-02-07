@@ -2,6 +2,8 @@ const express = require('express')
 const { ErrorHandler } = require('../utils/ErrorHandler')
 const passport = require('passport')
 const { User } = require('../models/user')
+const { userSchema } = require('../schemas/user')
+const validateSchema = require('../middlewares/validateSchema')
 const wrapAsync = require('../utils/wrapAsync')
 const router = express.Router()
 
@@ -11,6 +13,7 @@ router
     res.render('pages/auth/register', { currentUser: req.user })
   })
   .post(
+    validateSchema(userSchema),
     wrapAsync(async (req, res, next) => {
       try {
         const { username, email, password } = req.body
