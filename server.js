@@ -8,6 +8,7 @@ const ejsMate = require('ejs-mate')
 require('./config/db') // konfigurasi database
 
 const { User } = require('./models/user')
+const isGuest = require('./middlewares/isGuest')
 
 // load environment variables
 dotenv.config()

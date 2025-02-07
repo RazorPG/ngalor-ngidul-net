@@ -1,21 +1,21 @@
 const express = require('express')
 const { ErrorHandler } = require('../utils/ErrorHandler')
 const passport = require('passport')
-const { User } = require('../models/user')
 const { userSchema } = require('../schemas/user')
 const validateSchema = require('../middlewares/validateSchema')
 const controllerAuth = require('../controllers/auth')
 const wrapAsync = require('../utils/wrapAsync')
+const isGuest = require('../middlewares/isGuest')
 const router = express.Router()
 
 router
   .route('/register')
-  .get(controllerAuth.registerForm)
+  .get(isGuest, controllerAuth.registerForm)
   .post(validateSchema(userSchema), wrapAsync(controllerAuth.register))
 
 router
   .route('/login')
-  .get(controllerAuth.loginForm)
+  .get(isGuest, controllerAuth.loginForm)
   .post(
     passport.authenticate('local', {
       successRedirect: '/main',
