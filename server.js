@@ -1,8 +1,10 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const path = require('path')
+const flash = require('connect-flash')
 const passport = require('passport')
 const session = require('express-session')
+const { ErrorHandler } = require('./utils/ErrorHandler')
 const LocalStrategy = require('passport-local').Strategy
 const ejsMate = require('ejs-mate')
 require('./config/db') // konfigurasi database
@@ -26,6 +28,9 @@ app.use(
     saveUninitialized: false,
   })
 )
+
+// konfigurasi pesan cepat (flash)
+app.use(flash())
 
 // inisiasi passport dan sesi passport
 app.use(passport.initialize())
@@ -51,6 +56,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 //
 app.use((req, res, next) => {
   res.locals.currentUser = req.user
+  res.locals.success_msg = req.flash('success')
+  res.locals.erorr_msg = req.flash('error')
   next()
 })
 
@@ -65,6 +72,9 @@ app.get('/main', (req, res) => {
   res.render('pages/main', { currentUser: req.user })
 })
 
+app.all('*', (req, res, next) => {
+  next(new ErrorHandler('page no found!', 404))
+})
 // middleware untuk error
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err
@@ -72,6 +82,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render('pages/error', { err })
 })
 
-app.listen(3000, () => {
+app.listen(`${process.env.PORT}`, () => {
   console.log(`app listen to http://localhost:${process.env.PORT}`)
 })
