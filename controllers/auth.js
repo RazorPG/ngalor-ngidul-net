@@ -1,5 +1,4 @@
 const { User } = require('../models/user')
-const { ErrorHandler } = require('../utils/ErrorHandler')
 
 module.exports.registerForm = (req, res) => {
   res.render('pages/auth/register', { currentUser: req.user })

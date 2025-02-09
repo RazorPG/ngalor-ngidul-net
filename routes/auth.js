@@ -5,6 +5,7 @@ const validateSchema = require('../middlewares/validateSchema')
 const controllerAuth = require('../controllers/auth')
 const wrapAsync = require('../utils/wrapAsync')
 const isGuest = require('../middlewares/isGuest')
+const validateCredentials = require('../middlewares/validateCredentials')
 const router = express.Router()
 
 router
@@ -16,15 +17,7 @@ router
   .route('/login')
   .get(isGuest, controllerAuth.loginForm)
   .post(
-    (req, res, next) => {
-      const { username, password } = req.body
-      if (!username || !password) {
-        req.flash('error', 'username or password is required!')
-        return res.redirect('/login')
-      }
-
-      next()
-    },
+    validateCredentials,
     passport.authenticate('local', {
       failureRedirect: '/login',
       failureFlash: {
