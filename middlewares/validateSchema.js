@@ -5,7 +5,8 @@ module.exports = schema => {
     const { error } = schema.validate(req.body)
     if (error) {
       const message = error.details.map(msg => msg.message).join(',')
-      return next(new ErrorHandler(message, 400))
+      req.flash('error', message)
+      res.redirect('/register')
     }
     return next()
   }

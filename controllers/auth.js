@@ -10,9 +10,11 @@ module.exports.register = async (req, res, next) => {
     const { username, email, password } = req.body
     const user = new User({ username, email })
     await User.register(user, password)
+    req.flash('success', 'success register, you can login now!')
     res.redirect('/login')
   } catch (err) {
-    next(new ErrorHandler('Failed to register. Please try again.', 400))
+    req.flash('error', 'Failed to register. Please try again.')
+    res.redirect('/register')
   }
 }
 
@@ -21,6 +23,7 @@ module.exports.loginForm = (req, res) => {
 }
 
 module.exports.login = (req, res) => {
+  req.flash('success', 'success login!')
   res.redirect('/main')
 }
 

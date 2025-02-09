@@ -16,8 +16,21 @@ router
   .route('/login')
   .get(isGuest, controllerAuth.loginForm)
   .post(
+    (req, res, next) => {
+      const { username, password } = req.body
+      if (!username || !password) {
+        req.flash('error', 'username or password is required!')
+        return res.redirect('/login')
+      }
+
+      next()
+    },
     passport.authenticate('local', {
       failureRedirect: '/login',
+      failureFlash: {
+        type: 'error',
+        msg: 'invalid username or password',
+      },
     }),
     controllerAuth.login
   )

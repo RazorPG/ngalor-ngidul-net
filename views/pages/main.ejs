@@ -1,5 +1,24 @@
-<% layout('layout') %>
-
+<% layout('layout') %> <% if (success_msg.length) { %>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>success:</strong> <%= success_msg %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } else if (error_msg.length) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>error:</strong> <%= error_msg %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } %>
 <div class="container text-center">
   <h1>Welcome to Ngalor-Ngidul Net, <%= currentUser.username %>!</h1>
   <p>your email is <%= currentUser.email %></p>

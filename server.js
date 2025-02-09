@@ -10,6 +10,7 @@ const ejsMate = require('ejs-mate')
 require('./config/db') // konfigurasi database
 
 const { User } = require('./models/user')
+const isAuth = require('./middlewares/isAuth')
 
 // load environment variables
 dotenv.config()
@@ -56,7 +57,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use((req, res, next) => {
   res.locals.currentUser = req.user
   res.locals.success_msg = req.flash('success')
-  res.locals.erorr_msg = req.flash('error')
+  res.locals.error_msg = req.flash('error')
   next()
 })
 
@@ -66,7 +67,7 @@ app.get('/', (req, res) => {
 
 app.use('/', require('./routes/auth'))
 
-app.get('/main', (req, res) => {
+app.get('/main', isAuth, (req, res) => {
   if (!req.user) return res.redirect('/login')
   res.render('pages/main', { currentUser: req.user })
 })
