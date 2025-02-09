@@ -1,4 +1,5 @@
-const user = require('../models/user')
+const { User } = require('../models/user')
+const { ErrorHandler } = require('../utils/ErrorHandler')
 
 module.exports.registerForm = (req, res) => {
   res.render('pages/auth/register', { currentUser: req.user })
@@ -11,12 +12,16 @@ module.exports.register = async (req, res, next) => {
     await User.register(user, password)
     res.redirect('/login')
   } catch (err) {
-    next(new ErrorHandler('Failed to register. Please try again.', 403))
+    next(new ErrorHandler('Failed to register. Please try again.', 400))
   }
 }
 
 module.exports.loginForm = (req, res) => {
   res.render('pages/auth/login', { currentUser: req.user })
+}
+
+module.exports.login = (req, res) => {
+  res.redirect('/main')
 }
 
 module.exports.logout = (req, res) => {

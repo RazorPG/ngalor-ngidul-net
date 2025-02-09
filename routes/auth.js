@@ -1,5 +1,4 @@
 const express = require('express')
-const { ErrorHandler } = require('../utils/ErrorHandler')
 const passport = require('passport')
 const { userSchema } = require('../schemas/user')
 const validateSchema = require('../middlewares/validateSchema')
@@ -18,9 +17,9 @@ router
   .get(isGuest, controllerAuth.loginForm)
   .post(
     passport.authenticate('local', {
-      successRedirect: '/main',
       failureRedirect: '/login',
-    })
+    }),
+    controllerAuth.login
   )
 
 router.post('/logout', controllerAuth.logout)
