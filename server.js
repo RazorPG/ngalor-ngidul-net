@@ -66,11 +66,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/', require('./routes/auth'))
-
-app.get('/main', isAuth, (req, res) => {
-  if (!req.user) return res.redirect('/login')
-  res.render('pages/main', { currentUser: req.user })
-})
+app.use('/home', require('./routes/home'))
 
 app.all('*', (req, res, next) => {
   next(new ErrorHandler('page no found!', 404))

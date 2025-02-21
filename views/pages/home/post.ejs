@@ -1,0 +1,60 @@
+<% layout('layout') %>
+
+<h1 class="text-center">posting</h1>
+
+<% if (success_msg.length) { %>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>success:</strong> <%= success_msg %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } else if (error_msg.length) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>error:</strong> <%= error_msg %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } %>
+
+<form
+  action="/home/post"
+  method="post"
+  class="col-6 offset-3 validated-form"
+  novalidate
+>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input
+      type="text"
+      id="title"
+      name="title"
+      placeholder="Enter your title"
+      class="form-control"
+      required
+    />
+    <div class="valid-feedback">look good!</div>
+    <div class="invalid-feedback">please fill title</div>
+  </div>
+  <div class="mb-3">
+    <label for="content" class="form-label">Content</label>
+    <input
+      type="text"
+      id="content"
+      name="content"
+      placeholder="Enter your content"
+      class="form-control"
+      required
+    />
+    <div class="valid-feedback">look good!</div>
+    <div class="invalid-feedback">please fill content</div>
+  </div>
+  <button type="submit" class="btn btn-primary">upload</button>
+</form>

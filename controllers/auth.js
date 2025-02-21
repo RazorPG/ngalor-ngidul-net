@@ -23,7 +23,7 @@ module.exports.loginForm = (req, res) => {
 
 module.exports.login = (req, res) => {
   req.flash('success', 'success login!')
-  res.redirect('/main')
+  res.redirect('/home')
 }
 
 module.exports.logout = (req, res) => {
