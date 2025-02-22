@@ -19,19 +19,23 @@
   ></button>
 </div>
 <% } %>
-<div class="container text-center">
-  <h1 class="font-bold">do you want to post something?</h1>
-  <a href="/home/post" class="btn btn-primary">POST</a>
-</div>
-
-<% if (posts) { %> <% posts.forEach(post => { %>
-<div class="card" style="width: 18rem">
-  <div class="card-body">
-    <h5 class="card-title"><%= post.title %></h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary"><%= post.createAt %></h6>
-    <p class="card-text"><%= post.content %></p>
-    <a href="#" class="card-link">like</a>
-    <a href="#" class="card-link">comment</a>
+<div class="container">
+  <div class="column offset-3 col-6 text-center">
+    <h1 class="font-bold">do you want to post something?</h1>
+    <a href="/home/post" class="btn btn-primary">POST</a>
   </div>
+
+  <% if (posts) { %> <% posts.forEach(post => { %>
+  <div class="card column offset-3 col-6 my-5">
+    <div class="card-body">
+      <h5 class="card-title"><%= post.title %></h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary">
+        <%= post.createAt %>
+      </h6>
+      <p class="card-text"><%= post.content %></p>
+      <a href="/home/:idpost/like" class="btn btn-success">like</a>
+      <a href="/home/:idpost/comment" class="btn btn-warning">comment</a>
+    </div>
+  </div>
+  <% }) %> <% } %>
 </div>
-<% }) %> <% } %>
