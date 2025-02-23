@@ -30,10 +30,9 @@
     <div class="card-body">
       <small><%=post.user_id.username %></small>
       <h5 class="card-title"><%= post.title %></h5>
-      <h6
-        class="card-subtitle mb-2 text-body-secondary post-date"
-        data-date="<%= post.createAt %>"
-      ></h6>
+      <h6 class="card-subtitle mb-2 text-body-secondary post-date">
+        <%= post.createAt %>
+      </h6>
       <p class="card-text"><%= post.content %></p>
       <a href="/home/:idpost/like" class="btn btn-success">like</a>
       <a href="/home/:idpost/comment" class="btn btn-warning">comment</a>
