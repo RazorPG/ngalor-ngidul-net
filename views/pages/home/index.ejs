@@ -28,6 +28,7 @@
   <% if (posts) { %> <% posts.forEach(post => { %>
   <div class="card column offset-3 col-6 my-5">
     <div class="card-body">
+      <small><%=post.user_id.username %></small>
       <h5 class="card-title"><%= post.title %></h5>
       <h6 class="card-subtitle mb-2 text-body-secondary">
         <%= post.createAt %>

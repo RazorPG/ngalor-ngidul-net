@@ -3,7 +3,7 @@ const { Post } = require('../models/post')
 
 module.exports.homePage = async (req, res) => {
   if (!req.user) return res.redirect('/login')
-  const posts = await Post.find({})
+  const posts = await Post.find().populate('user_id')
   res.render('pages/home/index', { currentUser: req.user, posts })
 }
 
