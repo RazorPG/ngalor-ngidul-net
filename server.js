@@ -4,13 +4,13 @@ const path = require('path')
 const flash = require('connect-flash')
 const passport = require('passport')
 const session = require('express-session')
+const methodOverride = require('method-override')
 const { ErrorHandler } = require('./utils/ErrorHandler')
 const LocalStrategy = require('passport-local').Strategy
 const ejsMate = require('ejs-mate')
 require('./config/db') // konfigurasi database
 
 const { User } = require('./models/user')
-const isAuth = require('./middlewares/isAuth')
 
 // load environment variables
 dotenv.config()
@@ -28,6 +28,9 @@ app.use(
     saveUninitialized: false,
   })
 )
+
+// parsing body untuk form
+app.use(methodOverride('_method'))
 
 // konfigurasi pesan cepat (flash)
 app.use(flash())

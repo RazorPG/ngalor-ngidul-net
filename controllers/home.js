@@ -1,5 +1,5 @@
-const isAuth = require('../middlewares/isAuth')
 const { Post } = require('../models/post')
+const { ErrorHandler } = require('../utils/ErrorHandler')
 
 module.exports.homePage = async (req, res) => {
   if (!req.user) return res.redirect('/login')
@@ -21,4 +21,34 @@ module.exports.postStore = async (req, res) => {
   })
   await post.save()
   res.redirect('/home')
+}
+
+module.exports.editPage = async (req, res, next) => {
+  const { id } = req.params
+  const post = await Post.findById(id)
+  if (post) {
+    res.render('pages/home/editPost', { post })
+  } else {
+    next(new ErrorHandler('post_id not found!', 404))
+  }
+}
+
+module.exports.update = async (req, res, next) => {
+  const { title, content } = req.body
+  const { id } = req.params
+
+  const post = await Post.findById(id)
+
+  if (post) {
+    await Post.findByIdAndUpdate(id, {
+      title,
+      content,
+      createAt: Date.now(),
+    })
+    req.flash('success', 'success update post!')
+    res.redirect(`/home`)
+  } else {
+    req.flash('error', 'failed update post!')
+    res.redirect(`/home/post/${id}/edit`)
+  }
 }
