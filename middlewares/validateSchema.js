@@ -1,5 +1,3 @@
-const { ErrorHandler } = require('../utils/ErrorHandler')
-
 module.exports = schema => {
   return (req, res, next) => {
     const { error } = schema.validate(req.body)

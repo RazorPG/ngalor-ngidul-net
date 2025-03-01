@@ -23,11 +23,10 @@ module.exports.postStore = async (req, res) => {
   res.redirect('/home')
 }
 
-module.exports.editPage = async (req, res, next) => {
-  const { id } = req.params
-  const post = await Post.findById(id)
-  if (post) {
-    res.render('pages/home/editPost', { post })
+module.exports.editPage = (req, res, next) => {
+  if (res.headersSent) return
+  if (req.post) {
+    res.render('pages/home/editPost', { post: req.post })
   } else {
     next(new ErrorHandler('post_id not found!', 404))
   }
@@ -37,7 +36,7 @@ module.exports.update = async (req, res, next) => {
   const { title, content } = req.body
   const { id } = req.params
 
-  const post = await Post.findById(id)
+  const post = await Post.findById(id).populate('user_id')
 
   if (post) {
     await Post.findByIdAndUpdate(id, {
