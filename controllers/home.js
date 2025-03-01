@@ -51,3 +51,15 @@ module.exports.update = async (req, res, next) => {
     res.redirect(`/home/post/${id}/edit`)
   }
 }
+
+module.exports.destroy = async (req, res) => {
+  const { id } = req.params
+  const post = await Post.findByIdAndDelete(id)
+  if (post) {
+    req.flash('success', 'success delete post!')
+    res.redirect('/home')
+  } else {
+    req.flash('error', 'failed delete post!')
+    res.redirect(`/home/post/${id}/edit`)
+  }
+}

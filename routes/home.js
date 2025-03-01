@@ -11,18 +11,22 @@ const router = express.Router()
 router.route('/').get(wrapAsync(controllerHome.homePage))
 
 router
-  .route('/post')
+  .route('/posts')
   .get(isAuth, controllerHome.postPage)
   .post(wrapAsync(controllerHome.postStore))
 
 router
-  .route('/post/:id/edit')
-  .get(isAuth, isAuthorPost, wrapAsync(controllerHome.editPage))
+  .route('/posts/:id')
   .put(
     isAuth,
-    wrapAsync(isAuthorPost),
+    isAuthorPost,
     validateSchema(postSchema),
     wrapAsync(controllerHome.update)
   )
+  .delete(isAuth, isAuthorPost, wrapAsync(controllerHome.destroy))
+
+router
+  .route('/posts/:id/edit')
+  .get(isAuth, isAuthorPost, controllerHome.editPage)
 
 module.exports = router

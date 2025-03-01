@@ -22,7 +22,7 @@
 <div class="container">
   <div class="column offset-3 col-6 text-center">
     <h1 class="font-bold">do you want to post something?</h1>
-    <a href="/home/post" class="btn btn-primary">POST</a>
+    <a href="/home/posts" class="btn btn-primary">POST</a>
   </div>
 
   <% if (posts) { %> <% posts.forEach(post => { %>
@@ -34,7 +34,7 @@
         <small class="col-8 text-body-secondary post-date">
           <%= post.createAt %>
         </small>
-        <a class="col-1" href="/home/post/<%= post._id %>/edit">
+        <a class="col-1" href="/home/posts/<%= post._id %>/edit">
           <% if (currentUser._id.toString() == post.user_id._id.toString()) { %>
           <i data-feather="edit"></i>
           <% } %>
