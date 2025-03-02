@@ -2,28 +2,6 @@
 
 <h1 class="text-center">edit post</h1>
 
-<% if (success_msg.length) { %>
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>success:</strong> <%= success_msg %>
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
-</div>
-<% } else if (error_msg.length) { %>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>error:</strong> <%= error_msg %>
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
-</div>
-<% } %>
-
 <!-- form update -->
 <form
   action="/home/posts/<%= post._id %>?_method=PUT"
@@ -48,24 +26,29 @@
   </div>
   <div class="mb-3">
     <label for="content" class="form-label">Content</label>
-    <input
-      type="text"
+    <textarea
+      class="form-control"
+      placeholder="Enter your content"
       id="content"
       name="content"
-      value="<%= post.content %>"
-      placeholder="Enter your content"
-      class="form-control"
+      style="height: 100px"
       required
-    />
+    >
+<%= post.content %></textarea
+    >
     <div class="valid-feedback">look good!</div>
     <div class="invalid-feedback">please fill content</div>
   </div>
 </form>
 
 <div class="d-flex gap-2 offset-3">
-  <button type="submit" class="btn btn-primary py-2 px-3">update</button>
+  <button id="btn-post-update" type="submit" class="btn btn-primary py-2 px-3">
+    update
+  </button>
   <!-- form delete -->
   <form action="/home/posts/<%=post._id %>?_method=DELETE" method="post">
     <button class="btn btn-danger py-2 px-3" type="submit">delete</button>
   </form>
 </div>
+
+<script src="/js/updatePost.js"></script>

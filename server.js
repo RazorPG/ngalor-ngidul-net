@@ -11,6 +11,7 @@ const ejsMate = require('ejs-mate')
 require('./config/db') // konfigurasi database
 
 const { User } = require('./models/user')
+const isGuest = require('./middlewares/isGuest')
 
 // load environment variables
 dotenv.config()
@@ -64,7 +65,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.get('/', (req, res) => {
+app.get('/', isGuest, (req, res) => {
   res.render('pages/index')
 })
 

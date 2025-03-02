@@ -20,6 +20,7 @@ module.exports.postStore = async (req, res) => {
     user_id: req.user._id,
   })
   await post.save()
+  req.flash('success', 'success upload post!')
   res.redirect('/home')
 }
 

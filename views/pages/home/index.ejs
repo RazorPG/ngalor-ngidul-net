@@ -1,24 +1,4 @@
-<% layout('layout') %> <% if (success_msg.length) { %>
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>success:</strong> <%= success_msg %>
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
-</div>
-<% } else if (error_msg.length) { %>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>error:</strong> <%= error_msg %>
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
-</div>
-<% } %>
+<% layout('layout') %>
 <div class="container">
   <div class="column offset-3 col-6 text-center">
     <h1 class="font-bold">do you want to post something?</h1>
