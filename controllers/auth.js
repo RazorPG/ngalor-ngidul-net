@@ -12,7 +12,9 @@ module.exports.register = async (req, res, next) => {
     req.flash('success', 'success register, you can login now!')
     res.redirect('/login')
   } catch (err) {
-    req.flash('error', 'Failed to register. Please try again.')
+    if (err.message) req.flash('error', err.message)
+    else req.flash('error', 'Failed to register. Please try again.')
+
     res.redirect('/register')
   }
 }
