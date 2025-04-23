@@ -82,6 +82,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render('pages/error', { err })
 })
 
-app.listen(`${process.env.PORT}`, () => {
+app.listen(process.env.PORT, () => {
   console.log(`app listen to http://localhost:${process.env.PORT}`)
 })
