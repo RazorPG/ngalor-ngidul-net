@@ -1,5 +1,5 @@
 <% if (success_msg.length) { %>
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
+<div class="alert alert-warning alert-dismissible fade show z-3" role="alert">
   <strong>success:</strong> <%= success_msg %>
   <button
     type="button"
@@ -9,7 +9,7 @@
   ></button>
 </div>
 <% } else if (error_msg.length) { %>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="alert alert-danger alert-dismissible fade show z-3" role="alert">
   <strong>error:</strong> <%= error_msg %>
   <button
     type="button"

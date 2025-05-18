@@ -14,7 +14,9 @@
   </head>
   <body class="d-flex flex-column vh-100">
     <%- include('partials/navbar') %>
-    <main class="container flex-grow-1 mt-5 py-3">
+    <main
+      class="container mt-5 flex-grow-1 py-3 d-flex justify-content-center align-content-center flex-column"
+    >
       <%- include('partials/flashMsg') %> <%- body %>
     </main>
     <%- include('partials/footer') %>

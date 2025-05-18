@@ -4,11 +4,10 @@
 <form
   action="/login"
   method="post"
-  class="col-6 offset-3 validated-form"
+  class="col-12 col-lg-6 offset-lg-3 validated-form gap-3 gap-lg-4 d-flex flex-column"
   novalidate
 >
-  <div class="mb-3">
-    <label for="username" class="form-label">Username</label>
+  <div>
     <input
       type="text"
       id="username"
@@ -20,8 +19,7 @@
     <div class="valid-feedback">look good!</div>
     <div class="invalid-feedback">please choose a username</div>
   </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">Password</label>
+  <div>
     <input
       type="password"
       id="password"
