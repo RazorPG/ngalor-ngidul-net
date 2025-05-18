@@ -1,6 +1,12 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">Ngalor-Ngidul Net</a>
+    <a class="navbar-brand" href="/"
+      ><img
+        src="/img/logo.png"
+        width="35px"
+        alt="logo ngalor-ngidul net"
+        class="rounded-circle"
+    /></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -13,13 +19,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto text-center">
         <% if (!currentUser) { %>
         <li class="nav-item">
-          <a class="nav-link" href="/login">login</a>
+          <a class="nav-link" href="/login"><b>LOGIN</b></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/register">register</a>
+          <a class="nav-link" href="/register"><b>REGISTER</b></a>
         </li>
         <% } else { %>
         <li class="nav-item">
