@@ -12,13 +12,19 @@ module.exports.postPage = (req, res) => {
 }
 
 module.exports.postStore = async (req, res) => {
+  console.log(req.file)
   const { title, content } = req.body
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : null
+
   const post = new Post({
     title,
     content,
     createAt: Date.now(),
     user_id: req.user._id,
   })
+  if (imagePath) {
+    post.image = imagePath
+  }
   await post.save()
   req.flash('success', 'success upload post!')
   res.redirect('/home')

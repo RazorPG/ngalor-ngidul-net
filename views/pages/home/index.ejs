@@ -33,7 +33,9 @@
         </a>
       </div>
       <h5 class="card-title fw-semibold"><%= post.title %></h5>
-      <img src="/img/post.png" alt="image-post" class="card-img" />
+      <% if (post.image) { %>
+      <img src="<%= post.image %>" alt="image-post" class="card-img" />
+      <% } %>
       <p class="card-text text-justify"><%= post.content %></p>
       <a href="/home/:idpost/like" class="btn btn-success">like</a>
       <a href="/home/:idpost/comment" class="btn btn-warning">comment</a>

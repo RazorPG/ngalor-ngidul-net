@@ -5,7 +5,7 @@ const express = require('express')
 const validateSchema = require('../middlewares/validateSchema.js')
 const { postSchema } = require('../schemas/post.js')
 const isAuthorPost = require('../middlewares/isAuthorPost.js')
-
+const upload = require('../utils/upload.js')
 const router = express.Router()
 
 router.route('/').get(wrapAsync(controllerHome.homePage))
@@ -13,7 +13,7 @@ router.route('/').get(wrapAsync(controllerHome.homePage))
 router
   .route('/posts')
   .get(isAuth, controllerHome.postPage)
-  .post(wrapAsync(controllerHome.postStore))
+  .post(upload.single('image'), wrapAsync(controllerHome.postStore))
 
 router
   .route('/posts/:id')
