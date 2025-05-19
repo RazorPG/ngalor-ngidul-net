@@ -18,6 +18,7 @@ router
 router
   .route('/posts/:id')
   .put(
+    upload.single('image'),
     isAuth,
     isAuthorPost,
     validateSchema(postSchema),

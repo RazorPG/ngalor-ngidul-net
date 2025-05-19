@@ -1,5 +1,7 @@
 const { Post } = require('../models/post')
 const { ErrorHandler } = require('../utils/ErrorHandler')
+const path = require('path')
+const fs = require('fs')
 
 module.exports.homePage = async (req, res) => {
   if (!req.user) return res.redirect('/login')
@@ -12,7 +14,6 @@ module.exports.postPage = (req, res) => {
 }
 
 module.exports.postStore = async (req, res) => {
-  console.log(req.file)
   const { title, content } = req.body
   const imagePath = req.file ? `/uploads/${req.file.filename}` : null
 
@@ -32,6 +33,7 @@ module.exports.postStore = async (req, res) => {
 
 module.exports.editPage = (req, res, next) => {
   if (res.headersSent) return
+
   if (req.post) {
     res.render('pages/home/editPost', { post: req.post })
   } else {
@@ -42,8 +44,23 @@ module.exports.editPage = (req, res, next) => {
 module.exports.update = async (req, res, next) => {
   const { title, content } = req.body
   const { id } = req.params
-
   const post = await Post.findById(id).populate('user_id')
+
+  // Cek apakah ada file baru diupload
+  if (req.file) {
+    const newImagePath = `/uploads/${req.file.filename}`
+    // Hapus gambar lama kalau ada
+    if (post.image) {
+      const oldImagePath = path.join(__dirname, `../public${post.image}`)
+      fs.unlink(oldImagePath, err => {
+        if (err) console.error('Gagal hapus gambar lama:', err)
+      })
+    }
+    // Simpan gambar baru
+    post.image = newImagePath
+  }
+
+  await post.save()
 
   if (post) {
     await Post.findByIdAndUpdate(id, {
