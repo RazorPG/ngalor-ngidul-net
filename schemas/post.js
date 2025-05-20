@@ -1,11 +1,11 @@
 const Joi = require('joi')
 
 const postSchema = Joi.object({
-  title: Joi.string().min(5).max(20).required().messages({
+  title: Joi.string().min(5).max(50).required().messages({
     'string.base': 'Title must be a string',
     'string.empty': 'Title is required',
     'string.min': 'Title must be at least 5 characters long',
-    'string.max': 'Title must be at most 20 characters long',
+    'string.max': 'Title must be at most 50 characters long',
   }),
   content: Joi.string().min(10).max(200).required().messages({
     'string.base': 'Content must be a string',

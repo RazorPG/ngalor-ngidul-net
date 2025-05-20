@@ -35,8 +35,26 @@
       <img src="<%= post.image %>" alt="image-post" class="card-img" />
       <% } %>
       <p class="card-text text-justify"><%= post.content %></p>
-      <a href="/home/:idpost/like" class="btn btn-success">like</a>
-      <a href="/home/:idpost/comment" class="btn btn-warning">comment</a>
+      <div class="d-flex justify-content-center gap-3 align-items-center">
+        <a href="/home/:idpost/like">
+          <i
+            data-feather="thumbs-up"
+            style="color: white; width: 30px; height: 30px"
+          ></i>
+        </a>
+        <a href="/home/:idpost/comment">
+          <i
+            data-feather="message-circle"
+            style="color: white; width: 30px; height: 30px"
+          ></i>
+        </a>
+        <a href="/home/:idpost/share">
+          <i
+            data-feather="share"
+            style="color: white; width: 30px; height: 30px"
+          ></i>
+        </a>
+      </div>
     </div>
   </div>
   <% }) %> <% } %>

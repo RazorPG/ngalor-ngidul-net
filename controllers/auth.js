@@ -7,6 +7,18 @@ module.exports.registerForm = (req, res) => {
 module.exports.register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body
+
+    // Check if username or email already exists
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] })
+    if (existingUser) {
+      if (existingUser.username === username) {
+        req.flash('error', 'Username is already taken')
+      } else {
+        req.flash('error', 'Email is already registered')
+      }
+      return res.redirect('/register')
+    }
+
     const user = new User({ username, email })
     await User.register(user, password)
     req.flash('success', 'success register, you can login now!')

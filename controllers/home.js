@@ -79,6 +79,12 @@ module.exports.update = async (req, res, next) => {
 module.exports.destroy = async (req, res) => {
   const { id } = req.params
   const post = await Post.findByIdAndDelete(id)
+  if (post.image) {
+    const imagePath = path.join(__dirname, `../public${post.image}`)
+    fs.unlink(imagePath, err => {
+      if (err) console.error('Gagal hapus gambar:', err)
+    })
+  }
   if (post) {
     req.flash('success', 'success delete post!')
     res.redirect('/home')

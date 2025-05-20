@@ -29,12 +29,7 @@
         </li>
         <% } else { %>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            href="/logout"
-            onclick="event.preventDefault();document.getElementById('form-logout').submit()"
-            ><b>LOGOUT</b></a
-          >
+          <a class="nav-link" id="btn-logout" href="/logout"><b>LOGOUT</b></a>
         </li>
         <% } %>
         <form
@@ -47,3 +42,5 @@
     </div>
   </div>
 </nav>
+
+<script src="/js/logoutConfirm.js"></script>
