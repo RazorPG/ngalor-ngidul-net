@@ -71,6 +71,7 @@ app.get('/', isGuest, (req, res) => {
 
 app.use('/', require('./routes/auth'))
 app.use('/home', require('./routes/home'))
+app.use('/', require('./routes/info'))
 
 app.all('*', (req, res, next) => {
   next(new ErrorHandler('page no found!', 404))

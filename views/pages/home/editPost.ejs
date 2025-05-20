@@ -24,7 +24,7 @@
       novalidate
       enctype="multipart/form-data"
     >
-      <div class="input-group">
+      <div class="mb-3">
         <input
           type="text"
           id="title"
@@ -37,7 +37,7 @@
         <div class="valid-feedback">look good!</div>
         <div class="invalid-feedback">please fill title</div>
       </div>
-      <div class="input-group">
+      <div class="mb-3">
         <input
           type="file"
           id="image"
@@ -45,8 +45,6 @@
           accept="image/*"
           class="form-control"
         />
-        <div class="valid-feedback">look good!</div>
-        <div class="invalid-feedback">please fill image</div>
       </div>
       <% if (post.image) { %>
       <img
@@ -56,7 +54,7 @@
         style="width: 100px; height: 100px"
       />
       <% } %>
-      <div class="input-group">
+      <div class="mb-3">
         <textarea
           class="form-control"
           placeholder="Enter your content"
