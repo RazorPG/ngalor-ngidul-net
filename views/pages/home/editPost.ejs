@@ -21,8 +21,8 @@
       method="post"
       class="validated-form gap-3 gap-lg-4 d-flex flex-column"
       id="form-post-update"
-      novalidate
       enctype="multipart/form-data"
+      novalidate
     >
       <div class="mb-3">
         <input
@@ -51,7 +51,7 @@
         src="<%= post.image %>"
         alt="image-post"
         class="card-img mt-2"
-        style="width: 100px; height: 100px"
+        style="width: 100px"
       />
       <% } %>
       <div class="mb-3">
@@ -73,7 +73,7 @@
     <div class="d-flex flex-column gap-2 mt-3">
       <button
         type="submit"
-        id="btn-post-update"
+        form="form-post-update"
         class="btn btn-dark bg-black bg-opacity-50"
         style="--bs-btn-hover-bg: transparent"
       >
@@ -101,4 +101,3 @@
 ></form>
 
 <script src="/js/deletePost.js"></script>
-<script src="/js/updatePost.js"></script>
