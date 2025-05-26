@@ -2,28 +2,27 @@ pipeline {
     agent any
 
     stages {
-        stage('w/o docker') {
-            steps {
-                sh '''
-                echo "without docker"
-                ls -la
-                touch container-no.txt
-                '''
-            }
-        }
-        stage('w/ docker') {
+        stage('install dependencies') {
             agent {
-                docker{
+                docker {
                 image 'node:18-alpine'
                 reuseNode true
                 }
             }
             steps {
                 sh '''
-                ls -la
-                echo "with docker"
-                touch container-yes.txt
+                    npm install
                 '''
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'npx eslint .'
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo "step ini untuk deploy"
             }
         }
     }
