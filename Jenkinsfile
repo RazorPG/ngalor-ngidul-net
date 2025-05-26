@@ -2,6 +2,18 @@ pipeline {
     agent any
 
     stages {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh 'npm install'
+                stash includes: 'node_modules/**', name: 'deps'
+            }
+        }
         stage('Test') {
             agent {
                 docker {
@@ -24,10 +36,11 @@ pipeline {
                 }
             }
             steps {
+                unstash 'deps'
                 sh '''
                     echo "deploying..."
                     npm install -g netlify-cli
-                    netlify --version
+                    node_modules/.bin/netlify --version
                 '''
             }
         }
