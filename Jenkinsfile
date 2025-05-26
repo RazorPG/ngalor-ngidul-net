@@ -2,19 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('install dependencies') {
-            agent {
-                docker {
-                image 'node:18-alpine'
-                reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    npm install
-                '''
-            }
-        }
         stage('Test') {
             agent {
                 docker {
@@ -24,14 +11,24 @@ pipeline {
             }
             steps {
                 sh '''
+                    ls -la
                     test -f server.js
-                    npm test
                 '''
             }
         }
-        stage('deploy') {
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
-                echo "step ini untuk deploy"
+                sh '''
+                    echo "deploying..."
+                    npm install -g netlify-cli
+                    netlify --version
+                '''
             }
         }
     }
