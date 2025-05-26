@@ -15,9 +15,18 @@ pipeline {
                 '''
             }
         }
-        stage('test') {
+        stage('Test') {
+            agent {
+                docker {
+                image 'node:18-alpine'
+                reuseNode true
+                }
+            }
             steps {
-                sh 'npx eslint .'
+                sh '''
+                    test -f server.js
+                    npm test
+                '''
             }
         }
         stage('deploy') {
