@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        VERCEL_SITE_ID = 'prj_UW4xbgQcBDXOQX5MCmKsMEJhRvWX'
         VERCEL_TOKEN = credentials('vercel-token')
     }
 
@@ -46,7 +45,7 @@ pipeline {
                     echo "deploying..."
                     npm install vercel
                     node_modules/.bin/vercel --version
-                    npx vercel --token $VERCEL_TOKEN --prod --confirm --cwd . --project $VERCEL_SITE_ID
+                    npx vercel --token $VERCEL_TOKEN --prod --confirm --cwd .
                     node_modules/.bin/vercel status
                     echo "deployed successfully"                   
                 '''
