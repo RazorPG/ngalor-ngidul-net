@@ -15,7 +15,7 @@ module.exports.postPage = (req, res) => {
 
 module.exports.postStore = async (req, res) => {
   const { title, content } = req.body
-  const imagePath = req.file ? `/uploads/${req.file.filename}` : null
+  const imagePath = req.file ? req.file.path : null
 
   const post = new Post({
     title,
@@ -48,15 +48,8 @@ module.exports.update = async (req, res, next) => {
 
   // Cek apakah ada file baru diupload
   if (req.file) {
-    const newImagePath = `/uploads/${req.file.filename}`
-    // Hapus gambar lama kalau ada
-    if (post.image) {
-      const oldImagePath = path.join(__dirname, `../public${post.image}`)
-      fs.unlink(oldImagePath, err => {
-        if (err) console.error('Gagal hapus gambar lama:', err)
-      })
-    }
-    // Simpan gambar baru
+    const newImagePath = req.file.path
+    // Simpan gambar
     post.image = newImagePath
   }
 
@@ -79,12 +72,7 @@ module.exports.update = async (req, res, next) => {
 module.exports.destroy = async (req, res) => {
   const { id } = req.params
   const post = await Post.findByIdAndDelete(id)
-  if (post.image) {
-    const imagePath = path.join(__dirname, `../public${post.image}`)
-    fs.unlink(imagePath, err => {
-      if (err) console.error('Gagal hapus gambar:', err)
-    })
-  }
+
   if (post) {
     req.flash('success', 'success delete post!')
     res.redirect('/home')
