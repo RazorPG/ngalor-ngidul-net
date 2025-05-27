@@ -8,7 +8,7 @@ const methodOverride = require('method-override')
 const { ErrorHandler } = require('./utils/ErrorHandler')
 const LocalStrategy = require('passport-local').Strategy
 const ejsMate = require('ejs-mate')
-require('./config/db') // konfigurasi database
+const connectMongo = require('./config/db')
 
 const { User } = require('./models/user')
 const isGuest = require('./middlewares/isGuest')
@@ -83,6 +83,12 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render('pages/error', { err })
 })
 
-app.listen(process.env.PORT, () => {
-  console.log(`app listen to http://localhost:${process.env.PORT}`)
-})
+connectMongo()
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(`🚀 App listening at http://localhost:${process.env.PORT}`)
+    })
+  })
+  .catch(err => {
+    console.error('❌ Failed to connect to MongoDB. Server not started.')
+  })
