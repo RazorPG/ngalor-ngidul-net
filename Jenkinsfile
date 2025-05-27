@@ -43,8 +43,8 @@ pipeline {
                 unstash 'deps'
                 sh '''
                     echo "deploying..."
-                    npm install -g vercel
-                    vercel --token $VERCEL_TOKEN --prod --confirm --cwd .
+                    npm install vercel
+                    npx vercel --token $VERCEL_TOKEN --prod --confirm --cwd .
                     echo "deployed successfully"                   
                 '''
             }
