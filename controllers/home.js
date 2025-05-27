@@ -1,5 +1,6 @@
 const { Post } = require('../models/post')
 const { ErrorHandler } = require('../utils/ErrorHandler')
+const cloudinary = require('cloudinary').v2
 const path = require('path')
 const fs = require('fs')
 
@@ -15,7 +16,6 @@ module.exports.postPage = (req, res) => {
 
 module.exports.postStore = async (req, res) => {
   const { title, content } = req.body
-  const imagePath = req.file ? req.file.path : null
 
   const post = new Post({
     title,
@@ -23,9 +23,20 @@ module.exports.postStore = async (req, res) => {
     createAt: Date.now(),
     user_id: req.user._id,
   })
-  if (imagePath) {
-    post.image = imagePath
+
+  if (req.file) {
+    const pathfile = req.file.path
+    try {
+      post.image = {
+        url: pathfile,
+        public_id: req.file.filename,
+      }
+    } catch (err) {
+      req.flash('error', 'failed upload image to cloudinary: ' + err.message)
+      return res.redirect('/home')
+    }
   }
+
   await post.save()
   req.flash('success', 'success upload post!')
   res.redirect('/home')
@@ -50,7 +61,19 @@ module.exports.update = async (req, res, next) => {
   if (req.file) {
     const newImagePath = req.file.path
     // Simpan gambar
-    post.image = newImagePath
+
+    try {
+      if (post.image && post.image.public_id) {
+        await cloudinary.uploader.destroy(post.image.public_id)
+      }
+      post.image = {
+        url: newImagePath,
+        public_id: req.file.filename,
+      }
+    } catch (err) {
+      req.flash('error', 'failed update image to cloudinary: ' + err.message)
+      return res.redirect('/home')
+    }
   }
 
   await post.save()
@@ -72,6 +95,15 @@ module.exports.update = async (req, res, next) => {
 module.exports.destroy = async (req, res) => {
   const { id } = req.params
   const post = await Post.findByIdAndDelete(id)
+  // Hapus gambar jika ada
+  if (post.image && post.image.public_id) {
+    try {
+      await cloudinary.uploader.destroy(post.image.public_id)
+    } catch (err) {
+      req.flash('error', 'failed delete image in cloudinary')
+      req.redirect('/home')
+    }
+  }
 
   if (post) {
     req.flash('success', 'success delete post!')
