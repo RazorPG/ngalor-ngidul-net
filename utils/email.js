@@ -12,7 +12,7 @@ const transport = nodemailer.createTransport({
 })
 
 async function sendOtpEmail({ to, name, otp }) {
-  const from = process.env.FROM_EMAIL || 'rafidhilmi0504@gmail.com'
+  const from = process.env.FROM_EMAIL || 'no-reply@example.com'
   const subject = 'Your password reset code'
   const html = `
     <p>Hi ${name || ''},</p>
