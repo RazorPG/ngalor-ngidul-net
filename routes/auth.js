@@ -31,4 +31,20 @@ router
 
 router.post('/logout', controllerAuth.logout)
 
+// Forgot password / OTP reset routes
+router
+  .route('/forgot')
+  .get(isGuest, controllerAuth.forgotPasswordForm)
+  .post(isGuest, wrapAsync(controllerAuth.handleForgotPassword))
+
+router
+  .route('/verify-otp')
+  .get(isGuest, controllerAuth.verifyOtpForm)
+  .post(isGuest, wrapAsync(controllerAuth.handleVerifyOtp))
+
+router
+  .route('/reset-password')
+  .get(isGuest, controllerAuth.resetPasswordForm)
+  .post(isGuest, wrapAsync(controllerAuth.handleResetPassword))
+
 module.exports = router

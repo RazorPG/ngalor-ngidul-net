@@ -13,6 +13,12 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  otpToken: {
+    type: String,
+  },
+  otpExpires: {
+    type: Date,
+  },
 })
 
 userSchema.plugin(passportLocalMongoose)
