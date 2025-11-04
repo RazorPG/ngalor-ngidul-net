@@ -66,8 +66,15 @@ module.exports.handleForgotPassword = async (req, res) => {
   // generate 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString()
 
-  // store OTP and expiry (5 minutes)
-  user.otpToken = otp
+  // hash OTP before storing (HMAC-SHA256 with OTP_SECRET)
+  // NOTE: set process.env.OTP_SECRET in production to a secure random value
+  const otpSecret = process.env.OTP_SECRET || 'change_me_otp_secret'
+  const hashOtp = value =>
+    crypto.createHmac('sha256', otpSecret).update(value).digest('hex')
+  const otpHash = hashOtp(otp)
+
+  // store hashed OTP and expiry (5 minutes)
+  user.otpToken = otpHash
   user.otpExpires = Date.now() + 5 * 60 * 1000
   await user.save()
 
@@ -110,7 +117,23 @@ module.exports.handleVerifyOtp = async (req, res) => {
     return res.redirect('/forgot')
   }
 
-  if (otp !== user.otpToken) {
+  // Hash submitted OTP and compare with stored hashed token using timing-safe compare
+  const otpSecret = process.env.OTP_SECRET || 'change_me_otp_secret'
+  const hashOtp = value =>
+    crypto.createHmac('sha256', otpSecret).update(value).digest('hex')
+  const submittedHash = hashOtp(otp)
+
+  let isValid = false
+  try {
+    const a = Buffer.from(submittedHash, 'hex')
+    const b = Buffer.from(user.otpToken, 'hex')
+    if (a.length === b.length && crypto.timingSafeEqual(a, b)) isValid = true
+  } catch (err) {
+    // any error -> invalid
+    isValid = false
+  }
+
+  if (!isValid) {
     req.flash('error', 'Invalid OTP code.')
     return res.redirect('/verify-otp')
   }
